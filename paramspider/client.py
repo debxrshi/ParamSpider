@@ -10,7 +10,7 @@ import sys
 logging.basicConfig(level=logging.INFO)
 
 
-MAX_RETRIES = 3
+MAX_RETRIES = 5
 
 def load_user_agents():
     """
@@ -64,4 +64,4 @@ def fetch_url_content(url,proxy):
             sys.exit()
 
     logging.error(f"Failed to fetch URL {url} after {MAX_RETRIES} retries.")
-    sys.exit()
+    return None
