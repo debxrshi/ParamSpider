@@ -1,6 +1,6 @@
 import requests
+import os
 import random
-import json
 import logging
 import time
 import sys
@@ -11,6 +11,16 @@ logging.basicConfig(level=logging.INFO)
 
 
 MAX_RETRIES = 5
+
+def write_failed_to_file(url):
+    if not os.path.exists("results"):
+        os.makedirs("results")
+
+    failed_urls = os.path.join("results","failed_urls.txt")
+    
+    with open(failed_urls,w) as f:
+        f.write(url)
+
 
 def load_user_agents():
     """
@@ -64,4 +74,5 @@ def fetch_url_content(url,proxy,timeout=5):
             sys.exit()
 
     logging.error(f"Failed to fetch URL {url} after {MAX_RETRIES} retries. Moving on to next URL")
+    write_failed_to_file(url)
     return None

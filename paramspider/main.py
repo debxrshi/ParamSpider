@@ -21,6 +21,7 @@ HARDCODED_EXTENSIONS = [
     ".css", ".js", ".webp", ".woff", ".woff2", ".eot", ".ttf", ".otf", ".mp4", ".txt"
 ]
 
+
 def has_extension(url, extensions):
     """
     Check if the URL has a file extension matching any of the provided extensions.
