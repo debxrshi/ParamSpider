@@ -78,7 +78,7 @@ def clean_urls(urls, extensions, placeholder):
             cleaned_urls.add(cleaned_url)
     return list(cleaned_urls)
 
-def fetch_and_clean_urls(domain, extensions, stream_output,proxy, placeholder):
+def fetch_and_clean_urls(domain, extensions, stream_output,proxy, placeholder,timeout):
     """
     Fetch and clean URLs related to a specific domain from the Wayback Machine.
 
@@ -92,7 +92,7 @@ def fetch_and_clean_urls(domain, extensions, stream_output,proxy, placeholder):
     """
     logging.info(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} Fetching URLs for {Fore.CYAN + domain + Style.RESET_ALL}")
     wayback_uri = f"https://web.archive.org/cdx/search/cdx?url={domain}/*&output=txt&collapse=urlkey&fl=original&page=/"
-    response = client.fetch_url_content(wayback_uri,proxy)
+    response = client.fetch_url_content(wayback_uri,proxy,timeout)
     if response == None:
         return
     urls = response.text.split()
@@ -143,7 +143,6 @@ def main():
     parser.add_argument("--proxy", help="Set the proxy address for web requests.",default=None)
     parser.add_argument("-p", "--placeholder", help="placeholder for parameter values", default="FUZZ")
     parser.add_argument("-t", "--timeout", help="Changes the defualt timeout value", default=5)
-    parser.add_argument("-rt", "--retries", help="Changes the defualt retry value 5", default=5)
     args = parser.parse_args()
 
     if not args.domain and not args.list:
@@ -163,11 +162,11 @@ def main():
     extensions = HARDCODED_EXTENSIONS
 
     if args.domain:
-        fetch_and_clean_urls(domain, extensions, args.stream, args.proxy, args.placeholder)
+        fetch_and_clean_urls(domain, extensions, args.stream, args.proxy, args.placeholder, args.timeout)
 
     if args.list:
         for domain in domains:
-            fetch_and_clean_urls(domain, extensions, args.stream,args.proxy, args.placeholder)
+            fetch_and_clean_urls(domain, extensions, args.stream,args.proxy, args.placeholder, args.timeout)
 
 if __name__ == "__main__":
     main()
