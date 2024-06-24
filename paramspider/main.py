@@ -93,6 +93,8 @@ def fetch_and_clean_urls(domain, extensions, stream_output,proxy, placeholder):
     logging.info(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} Fetching URLs for {Fore.CYAN + domain + Style.RESET_ALL}")
     wayback_uri = f"https://web.archive.org/cdx/search/cdx?url={domain}/*&output=txt&collapse=urlkey&fl=original&page=/"
     response = client.fetch_url_content(wayback_uri,proxy)
+    if response == None:
+        return
     urls = response.text.split()
     
     logging.info(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} Found {Fore.GREEN + str(len(urls)) + Style.RESET_ALL} URLs for {Fore.CYAN + domain + Style.RESET_ALL}")
@@ -129,7 +131,8 @@ def main():
  / .__/\_,_/_/  \_,_/_/_/_/___/ .__/_/\_,_/\__/_/   
 /_/                          /_/                    
 
-                              with <3 by @0xasm0d3us           
+                              original by @0xasm0d3us
+                              fork authored by @debxrshi           
     """
     colored_log_text = f"{yellow_color_code}{log_text}{reset_color_code}"
     print(colored_log_text)
@@ -139,6 +142,8 @@ def main():
     parser.add_argument("-s", "--stream", action="store_true", help="Stream URLs on the terminal.")
     parser.add_argument("--proxy", help="Set the proxy address for web requests.",default=None)
     parser.add_argument("-p", "--placeholder", help="placeholder for parameter values", default="FUZZ")
+    parser.add_argument("-t", "--timeout", help="Changes the defualt timeout value", default=5)
+    parser.add_argument("-rt", "--retries", help="Changes the defualt retry value 5", default=5)
     args = parser.parse_args()
 
     if not args.domain and not args.list:
