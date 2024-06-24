@@ -18,7 +18,7 @@ def write_failed_to_file(url):
 
     failed_urls = os.path.join("results","failed_urls.txt")
     
-    with open(failed_urls,w) as f:
+    with open(failed_urls,"w") as f:
         f.write(url)
 
 
