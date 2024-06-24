@@ -79,6 +79,16 @@ def clean_urls(urls, extensions, placeholder):
             cleaned_urls.add(cleaned_url)
     return list(cleaned_urls)
 
+def sanitize_filename(filename):
+    """
+    Sanitize the filename by removing or replacing invalid characters.
+    """
+    invalid_chars = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
+    for char in invalid_chars:
+        filename = filename.replace(char, '_')
+    return filename
+
+
 def fetch_and_clean_urls(domain, extensions, stream_output,proxy, placeholder,timeout):
     """
     Fetch and clean URLs related to a specific domain from the Wayback Machine.
@@ -109,7 +119,8 @@ def fetch_and_clean_urls(domain, extensions, stream_output,proxy, placeholder,ti
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
 
-    result_file = os.path.join(results_dir, f"{domain}.txt")
+    sanitized_domain = sanitize_filename(domain)
+    result_file = os.path.join(results_dir, f"{sanitized_domain}.txt")
 
     with open(result_file, "w") as f:
         for url in cleaned_urls:
