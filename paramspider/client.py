@@ -70,7 +70,7 @@ def fetch_url_content(url,proxy,timeout=3):
             return response
         except (requests.exceptions.RequestException, ValueError):
             logging.warning(f"Error fetching URL {url}. Retrying in {timeout} seconds...")
-            time.sleep(timeout)
+            time.sleep(int(timeout))
         except KeyboardInterrupt:
             logging.warning("Keyboard Interrupt received. Exiting gracefully...")
             sys.exit()
